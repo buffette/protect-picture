@@ -80,41 +80,41 @@ if (!in_array($imageType, $conf['authorized_mime_type'])) {
 
 if ($imageType === 'image/jpeg') {
     $image = imagecreatefromjpeg($_FILES['picture']['tmp_name']);
+
+    $exif = exif_read_data($_FILES["picture"]["tmp_name"]);
+    if (isset($exif['Orientation'])) {
+        switch ($exif['Orientation']) {
+            case 2:
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+            case 3:
+                $image = imagerotate($image, 180, 0);
+                break;
+            case 4:
+                imageflip($image, IMG_FLIP_VERTICAL);
+                break;
+            case 5:
+                $image = imagerotate($image, -90, 0);
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+            case 6:
+                $image = imagerotate($image, -90, 0);
+                break;
+            case 7:
+                $image = imagerotate($image, 90, 0);
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+            case 8:
+                $image = imagerotate($image, 90, 0);
+                break;
+        }
+    }
 } elseif ($imageType === 'image/png') {
     $image = imagecreatefrompng($_FILES['picture']['tmp_name']);
 } elseif ($imageType === 'image/gif') {
     $image = imagecreatefromgif($_FILES['picture']['tmp_name']);
 } else {
     die('Ce format d\'image sera pris en charche très bientôt !');
-}
-
-$exif = exif_read_data($_FILES["picture"]["tmp_name"]);
-if (isset($exif['Orientation'])) {
-    switch ($exif['Orientation']) {
-        case 2:
-            imageflip($image, IMG_FLIP_HORIZONTAL);
-            break;
-        case 3:
-            $image = imagerotate($image, 180, 0);
-            break;
-        case 4:
-            imageflip($image, IMG_FLIP_VERTICAL);
-            break;
-        case 5:
-            $image = imagerotate($image, -90, 0);
-            imageflip($image, IMG_FLIP_HORIZONTAL);
-            break;
-        case 6:
-            $image = imagerotate($image, -90, 0);
-            break;
-        case 7:
-            $image = imagerotate($image, 90, 0);
-            imageflip($image, IMG_FLIP_HORIZONTAL);
-            break;
-        case 8:
-            $image = imagerotate($image, 90, 0);
-            break;
-    }
 }
 
 if ($_POST['action'] === 'preview') {
