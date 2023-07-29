@@ -1,96 +1,59 @@
 $(document).ready(function() {
     function checkTextFont() {
-        if ($('#selectTextFont').val() !== '') {
-            $('#personalize-font-file').hide();
+        if (!$('#buttonUseTtf').is(':checked')) {
+            $('#default-fonts').show();
+            $('#personalize-font').hide();
         } else {
-            $('#personalize-font-file').show();
+            $('#default-fonts').hide();
+            $('#personalize-font').show();
         }
     }
 
-    function checkTextSize() {
-        $('#textSizeValue').val($('#inputTextSize').val())
-    }
+    // const modalPreviewPicture = new bootstrap.Modal('#modal-preview', {
+    //     keyboard: false
+    // })
 
-    function checkTextColorAlpha() {
-        $('#textColorAlphaValue').val($('#inputTextColorAlpha').val())
-    }
-
-    function checkTextAngle() {
-        $('#textAngleValue').val($('#inputTextAngle').val())
-    }
-
-    function checkTextPosition() {
-        if ($('#selectTextPosition').val() === 'middle_middle') {
-            $('#personalize-text-border').hide();
-        } else {
-            $('#personalize-text-border').show();
-        }
-    }
 
     checkTextFont();
-    checkTextSize();
-    checkTextColorAlpha();
-    checkTextAngle();
-    checkTextPosition();
 
-    $('#selectTextFont').change(function () {
-        checkTextFont();
+    $('#form-protect-picture').submit(function (e) {
+        let typeSubmit = $(this).find('button[type=submit]:focus').attr('value');
+        if (typeSubmit !== 'preview') {
+            return true;
+        }
+
+        e.preventDefault();
+        const formData = new FormData(this);
+        formData.append($(this).find('button[type=submit]:focus').attr('name'), typeSubmit)
+
+        $.ajax({
+            url : $(this).attr("action"),
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success: function(data, textStatus, jqXHR){
+                if (!data.valid) {
+                    $('#modal-preview').find('.modal-body').html('Erreur !');
+                } else {
+                    $('#modal-preview').find('.modal-dialog').html($('<img/>').attr('src', 'data:image/png;base64,' + data.imageBase64).addClass('img-preview'));
+                    $('#preview-picture').html($('<img/>').attr('src', 'data:image/png;base64,' + ((data.imageBase64Adapt !== null) ? data.imageBase64Adapt : data.imageBase64)).addClass('img-preview'));
+
+                    console.log(data.imageBase64 === data.imageBase64Adapt);
+
+                    // modalPreviewPicture.show();
+                }
+
+
+                console.log('success');
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log('error');
+            }
+        });
     });
 
     $('#buttonUseTtf').click(function () {
-        $('#selectTextFont').val('');
         checkTextFont();
-    });
-
-    $('#inputTextSize').change(function () {
-        checkTextSize();
-    });
-
-    $('#textSizeValue').change(function () {
-        let minVal = parseInt($('#inputTextSize').attr('min'));
-        let maxVal = parseInt($('#inputTextSize').attr('max'));
-        let newVal = parseInt($(this).val());
-        if (newVal < minVal || newVal > maxVal) {
-            alert('La taille du texte doit être comprise entre ' + minVal + ' et ' + maxVal + ' !');
-            $('#textSizeValue').val($('#inputTextSize').val());
-        } else {
-            $('#inputTextSize').val(newVal)
-        }
-    });
-
-    $('#inputTextColorAlpha').change(function () {
-        checkTextColorAlpha();
-    });
-
-    $('#textColorAlphaValue').change(function () {
-        let minVal = parseInt($('#inputTextColorAlpha').attr('min'));
-        let maxVal = parseInt($('#inputTextColorAlpha').attr('max'));
-        let newVal = parseInt($(this).val());
-        if (newVal < minVal || newVal > maxVal) {
-            alert('La transparence de la couleur du texte doit être comprise entre ' + minVal + ' et ' + maxVal + ' !');
-            $('#textColorAlphaValue').val($('#inputTextColorAlpha').val());
-        } else {
-            $('#inputTextColorAlpha').val(newVal)
-        }
-    });
-
-    $('#inputTextAngle').change(function () {
-        checkTextAngle();
-    });
-
-    $('#textAngleValue').change(function () {
-        let minVal = parseInt($('#inputTextAngle').attr('min'));
-        let maxVal = parseInt($('#inputTextAngle').attr('max'));
-        let newVal = parseInt($(this).val());
-        if (newVal < minVal || newVal > maxVal) {
-            alert('L\'inclinaison du texte doit être comprise entre ' + minVal + ' et ' + maxVal + ' !');
-            $('#textAngleValue').val($('#inputTextAngle').val());
-        } else {
-            $('#inputTextAngle').val(newVal)
-        }
-    });
-
-    $('#selectTextPosition').change(function () {
-        checkTextPosition();
     });
 });

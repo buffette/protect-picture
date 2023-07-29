@@ -7,10 +7,24 @@ if (PHP_OS === 'Linux') {
     die('PHP_OS non pris en charge : ' . PHP_OS);
 }
 
+const VERSION_ENV_PROD = 1;
+const VERSION_ENV_BETA = 2;
+const VERSION_ENV_DEV = 3;
+
 include 'FontMeta.class.php';
 
-$conf['version'] = 'V1.0.7';
-$conf['authorized_mime_type'] = ['image/png', 'image/jpeg', 'image/gif'];
+$conf['version'] = [
+    'env' => VERSION_ENV_DEV,
+    'number' => [
+        'major' => 2,
+        'minor' => 0,
+        'revision' => 0,
+    ],
+    'update' => '29/07/2023'
+];
+
+//$conf['authorized_mime_type'] = ['image/png', 'image/jpeg', 'application/zip'];
+$conf['authorized_mime_type'] = ['image/png', 'image/jpeg'];
 $conf['text']['emplacements'] = [
     'left_top' => 'En haut à gauche',
     'middle_top' => 'Centré en haut',
@@ -66,3 +80,32 @@ function getFont($font) {
         die('getFont($font) - PHP_OS non pris en charge : ' . PHP_OS);
     }
 }
+
+$string_env = function() use ($conf) {
+    switch ($conf['version']['env']) {
+        case VERSION_ENV_PROD:
+            return [
+                'small' => 'prod',
+                'long' => 'production'
+            ];
+        case VERSION_ENV_BETA:
+            return [
+                'small' => 'beta',
+                'long' => 'beta'
+            ];
+        case VERSION_ENV_DEV:
+            return [
+                'small' => 'dev',
+                'long' => 'développement'
+            ];
+    }
+
+    return [
+        'small' => 'ind',
+        'long' => 'indéterminé'
+    ];
+};
+
+$string_version = function () use ($conf, $string_env) {
+    return $conf['version']['number']['major'] . '.' . $conf['version']['number']['minor'] . '.' . $conf['version']['number']['revision'] . ($conf['version']['env'] !== VERSION_ENV_PROD ? '-' .  $string_env()['small'] : '');
+};

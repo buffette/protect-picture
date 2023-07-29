@@ -1,0 +1,46 @@
+.h1.has-description,
+.h2.has-description,
+.h3.has-description,
+.h4.has-description,
+.h5.has-description,
+.h6.has-description,
+h1.has-description,
+h2.has-description,
+h3.has-description,
+h4.has-description,
+h5.has-description,
+h6.has-description {
+    margin-bottom: 0;
+}
+
+.h1.has-description + small.description,
+.h2.has-description + small.description,
+.h3.has-description + small.description,
+.h4.has-description + small.description,
+.h5.has-description + small.description,
+.h6.has-description + small.description,
+h1.has-description + small.description,
+h2.has-description + small.description,
+h3.has-description + small.description,
+h4.has-description + small.description,
+h5.has-description + small.description,
+h6.has-description + small.description {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+img.img-preview {
+    max-width: 100%;
+}
+
+.alert  .alert-icon-3.bi {
+    width: 3em;
+    height: 3em;
+    fill: currentcolor;
+}
+
+.alert .bi {
+    width: 1em;
+    height: 1em;
+    fill: currentcolor;
+}

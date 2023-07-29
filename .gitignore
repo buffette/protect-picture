@@ -1,0 +1,7 @@
+###> PhpStorm project ###
+.idea/
+###< PhpStorm project ###
+
+###> npm ###
+/node_modules/
+###< npm ###
