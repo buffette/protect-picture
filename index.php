@@ -24,7 +24,7 @@ require_once 'config.php';
                 </svg>
                 <div>
                     <h2>Version <?= $string_env()['long'] ?></h2>
-                    Cette version est actuellement en développement, il se peut que certaines fonctionnalités, voir toutes, ne soient pas disponnibles.
+                    <p>Cette version est actuellement en développement, il se peut que certaines fonctionnalités, voir toutes, ne soient pas disponnibles.</p>
                 </div>
             </div>
         <?php endif; ?>
@@ -35,7 +35,7 @@ require_once 'config.php';
             </svg>
             <div>
                 <h2>Le site est passé en version 2 !</h2>
-                Voici les principaux changements mis en place pour cette nouvelle version majeur :
+                <span>Voici les principaux changements mis en place pour cette nouvelle version majeur :</span>
                 <ul>
                     <li>Il est désormais possible de prévisuialiser l'image avant le téléchargement, directement dans le formulaire.</li>
                     <li>Les fichiers type image/gif (.gif) ne sont plus pris en charge.</li>
@@ -88,12 +88,8 @@ require_once 'config.php';
                     <a id="preview-picture" href="#" data-bs-toggle="modal" data-bs-target="#modal-preview"></a>
                 </div>
             </div>
-            <button type="submit" name="action" value="preview" class="btn btn-primary mt-3">
-                Prévisualiser
-            </button>
-            <button type="submit" name="action" value="download" class="btn btn-primary mt-3">
-                Télécharger
-            </button>
+            <button type="submit" name="action" value="preview" class="btn btn-primary mt-3">Prévisualiser</button>
+            <button type="submit" name="action" value="download" class="btn btn-primary mt-3">Télécharger</button>
         </form>
     </div>
 </main>
