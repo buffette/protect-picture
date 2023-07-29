@@ -89,30 +89,32 @@ if ($imageType === 'image/jpeg') {
 }
 
 $exif = exif_read_data($_FILES["picture"]["tmp_name"]);
-switch ($exif['Orientation']) {
-    case 2:
-        imageflip($image, IMG_FLIP_HORIZONTAL);
-        break;
-    case 3:
-        $image = imagerotate($image, 180, 0);
-        break;
-    case 4:
-        imageflip($image, IMG_FLIP_VERTICAL);
-        break;
-    case 5:
-        $image = imagerotate($image, -90, 0);
-        imageflip($imageObject, IMG_FLIP_HORIZONTAL);
-        break;
-    case 6:
-        $image = imagerotate($image, -90, 0);
-        break;
-    case 7:
-        $image = imagerotate($image, 90, 0);
-        imageflip($imageObject, IMG_FLIP_HORIZONTAL);
-        break;
-    case 8:
-        $image = imagerotate($image, 90, 0);
-        break;
+if (isset($exif['Orientation'])) {
+    switch ($exif['Orientation']) {
+        case 2:
+            imageflip($image, IMG_FLIP_HORIZONTAL);
+            break;
+        case 3:
+            $image = imagerotate($image, 180, 0);
+            break;
+        case 4:
+            imageflip($image, IMG_FLIP_VERTICAL);
+            break;
+        case 5:
+            $image = imagerotate($image, -90, 0);
+            imageflip($image, IMG_FLIP_HORIZONTAL);
+            break;
+        case 6:
+            $image = imagerotate($image, -90, 0);
+            break;
+        case 7:
+            $image = imagerotate($image, 90, 0);
+            imageflip($image, IMG_FLIP_HORIZONTAL);
+            break;
+        case 8:
+            $image = imagerotate($image, 90, 0);
+            break;
+    }
 }
 
 if ($_POST['action'] === 'preview') {
